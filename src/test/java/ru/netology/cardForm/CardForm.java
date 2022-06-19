@@ -29,7 +29,7 @@ public class CardForm {
         calend.add(Calendar.DAY_OF_YEAR, 7);
         SimpleDateFormat formatCalend = new SimpleDateFormat("dd.MM.yyyy");
         String date = formatCalend.format(calend.getTime());
-        System.out.println(date);
+
        formCard.$x(".//span[@data-test-id='city']//input").val("Москва");
        formCard.$x(".//span[@data-test-id='date']//input").sendKeys(Keys.LEFT_CONTROL + "A");
        formCard.$x(".//span[@data-test-id='date']//input").sendKeys(Keys.BACK_SPACE);
