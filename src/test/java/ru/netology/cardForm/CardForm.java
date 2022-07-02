@@ -6,10 +6,9 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.Keys;
 
-import java.text.SimpleDateFormat;
 import java.time.Duration;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 import static com.codeborne.selenide.Selenide.$x;
 import static com.codeborne.selenide.Selenide.open;
@@ -23,12 +22,19 @@ public class CardForm {
         open("http://localhost:9999/");
     }
 
+    public String generateDate(int days) {
+        return LocalDate.now().plusDays(days).format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
+    }
+    String date = generateDate(7);
+
+
     @Test
     public void SuccessfulFormSubmission() {
-        Calendar calend = new GregorianCalendar();
-        calend.add(Calendar.DAY_OF_YEAR, 7);
-        SimpleDateFormat formatCalend = new SimpleDateFormat("dd.MM.yyyy");
-        String date = formatCalend.format(calend.getTime());
+        //Calendar calend = new GregorianCalendar();
+        //calend.add(Calendar.DAY_OF_YEAR, 7);
+        //SimpleDateFormat formatCalend = new SimpleDateFormat("dd.MM.yyyy");
+        //String date = formatCalend.format(calend.getTime());
+
 
        formCard.$x(".//span[@data-test-id='city']//input").val("Москва");
        formCard.$x(".//span[@data-test-id='date']//input").sendKeys(Keys.LEFT_CONTROL + "A");
@@ -40,7 +46,8 @@ public class CardForm {
        formCard.$x(".//span[contains(text(), 'Забронировать')]//ancestor::button").click();
        notice.should(Condition.visible, Duration.ofSeconds(15));
        notice.$x(".//div[@class='notification__title']").should(Condition.text("Успешно"));
-       notice.$x(".//div[@class='notification__content']").should(Condition.text("Встреча успешно забронирована на " + formCard.$x(".//span[@data-test-id='date']//input").getValue()));
+       notice.$x(".//div[@class='notification__content']").should(Condition.text("Встреча успешно забронирована на " + date));
 
     }
+
 }
